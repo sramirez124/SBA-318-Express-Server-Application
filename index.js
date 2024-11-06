@@ -20,9 +20,15 @@ app.get('/users/:id', (req, res) => {
     res.send(user);
 });
 
+app.get("/posts/:id", (req, res) => {
+    const post = posts.find(post => post.id === parseInt(req.params.id));
+    if (post) res.json(post);
+    res.send(post);
+});
+
 
 // POST
-app.post('/users', (req, res) => {
+app.post('/api/users', (req, res) => {
     if (req.body.name && req.body.role && req.body.username && req.body.password && req.body.email) {
         const foundUser = users.find(user => user.username === req.body.username);
         const foundName = users.find(user => user.name === req.body.name);
@@ -46,6 +52,7 @@ app.post('/users', (req, res) => {
 })
 
 app.use((err, req, res, next) => {
+    console.log(res.statusCode, err);
     res.status(404).json({ error: err })
 })
 
